@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   Dimensions,
   Image,
@@ -8,27 +8,38 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
+  Modal
 } from "react-native";
-
+import { useSelector } from "react-redux";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 
-const SingleNews = ({ item, index, darkTheme }) => {
+const SingleNews = ({ item, darkTheme }) => {
+  const { isLoading } = useSelector((state) => state.NewsReducer);
   return (
-    <View
+    <>
+    {
+    !isLoading?
+      <View
       style={{
         height: windowHeight,
         width: windowWidth,
-        transform: [{ scaleY:-1 }],
+        transform: [{ scaleY: -1}],
       }}
       // key={index}
-      >
-     <Image
+    >
+      <Image
         source={{ uri: item.urlToImage }}
-        style={{ height: "40%", resizeMode: "cover", width: windowWidth }}
-      /> 
-      <View style={{...styles.description,backgroundColor:"white"}}>
-      <Text style={{ ...styles.title, color: darkTheme ? "white" : "black" }}>
+        style={{ height: "40%", resizeMode: "cover", width: windowWidth}}
+      />
+      <View
+        style={{
+          ...styles.description,
+          backgroundColor: darkTheme ? "#282C35" : "white",
+        }}
+      >
+        <Text style={{ ...styles.title, color: darkTheme ? "white" : "black" }}>
           {item.title}
         </Text>
         <Text
@@ -44,24 +55,26 @@ const SingleNews = ({ item, index, darkTheme }) => {
           </Text>
         </Text>
       </View>
-        <ImageBackground 
-          blurRadius={30} 
-          style={styles.footer}
-          source={{uri:item.urlToImage}}
-        >
-          <TouchableOpacity onPress={() =>
-          Linking.openURL(
-            item.url
-          )}>
+      <ImageBackground
+        blurRadius={30}
+        style={styles.footer}
+        source={{ uri: item.urlToImage }}
+      >
+        <TouchableOpacity onPress={() => Linking.openURL(item.url)}>
           <Text style={{ fontSize: 15, color: "white" }}>
             '{item?.content?.slice(0, 45)}...'
           </Text>
           <Text style={{ fontSize: 17, fontWeight: "bold", color: "white" }}>
             Read More
           </Text>
-          </TouchableOpacity>
-        </ImageBackground>
-    </View>
+        </TouchableOpacity>
+      </ImageBackground>
+    </View>:
+    <Modal>
+      <ActivityIndicator size={"large"} color="red"/>
+    </Modal>
+  }
+  </>
   );
 };
 

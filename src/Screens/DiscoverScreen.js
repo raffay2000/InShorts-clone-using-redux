@@ -5,53 +5,49 @@ import {
     TouchableOpacity,
     Image,
     Dimensions,
-    FlatList
+    Modal,
+    ActivityIndicator,
   } from "react-native";
   import React, { useContext,useEffect } from "react";
   import { NewsContext } from "../../API/Context";
-  import { categories, getNewsAPI, getSourceAPI, sources } from "../../API/Api";
+  import { categories, sources } from "../../API/Api";
   import Carousel from "react-native-snap-carousel";
-  import {setNews,setSource,setCategory} from "../../Redux/Actions/NewsAction"
+  import {fetchApi,setCategory,fetchApiSource,setSource} from "../../Redux/Actions/NewsAction"
   import {useDispatch,useSelector} from "react-redux"
-  import axios from 'axios'
   
-    const DiscoverScreen = () => {
-        const dispatch = useDispatch();
-        const {news,source,category} =useSelector(state=>state.NewsReducer)
+  const DiscoverScreen = () => {
+    const dispatch = useDispatch();
+    const {category,source,isLoading} =useSelector(state=>state.NewsReducer)
     const WindowWidth = Dimensions.get("window").width;
     const Item_Width = Math.round( WindowWidth / 3 );
+
+    useEffect(()=> {
+      
+        dispatch(fetchApi(category))
+        // fetchApi()
+    },[category])
+
     useEffect(() => {
-        fetchApi()
-    }, [category])
-    useEffect(() => {
-        fetchApiSource()
+        dispatch(fetchApiSource(source))
+        // console.log(source)
+        // fetchApiSource()
     },[source])
-        const fetchApiSource = async()=>{
-            try {const {data} = await axios.get(getSourceAPI(source))
-                dispatch(setSource(data))
-                setIndex(1)
-            }catch(error){
-                console.log(error)
-            }
-       
-        }
-    const fetchApi= async()=>{
-        const {data} = await axios.get(getNewsAPI(category))
-        dispatch(setNews(data))
-        setIndex(1)
-    }
-    const {setIndex} = useContext(NewsContext);
+
+    const {darkTheme} = useContext(NewsContext);
     return (
       <View style={styles.container}>
-      
-        <Text style={styles.Heading}>categories</Text>
+        <Text style={{...styles.Heading,color:darkTheme?"white":"black"}}>categories</Text>
         <Carousel
         layout="default"
         data={categories}
-        renderItem={({ item, index }) => (
-          <TouchableOpacity onPress={()=>{dispatch(setCategory(item.name))}}>
+        renderItem={({ item}) => (
+          <TouchableOpacity onPress={()=>{
+            dispatch(setCategory(item.name))
+            // console.log(category)
+            // setCategory(item.name)
+            }}>
             <Image source={{ uri: item.pic }} style={styles.caroselImage} />
-            <Text style={{ fontSize: 18, textTransform: "capitalize" }}>
+            <Text style={{ fontSize: 18, textTransform: "capitalize",color:darkTheme?"white":"black" }}>
               {" "}
               {item.name}
             </Text>
@@ -64,11 +60,14 @@ import {
         // inactiveSlideShift={10}
         inactiveSlideOpacity={1}
       />
-        <Text style={styles.Heading}>source</Text>
+        <Text style={{...styles.Heading,color:darkTheme?"white":"black"}}>source</Text>
         <View style={styles.sources}>
           {sources.map((s) => (
             <TouchableOpacity
-              onPress={() => dispatch(setSource(s.id))}
+              onPress={() => 
+                dispatch(setSource(s.id))
+              // {setSource(s.id)}
+              }
               key={s.id}
               style={styles.sourceContainer}
             >

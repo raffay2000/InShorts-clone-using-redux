@@ -1,44 +1,52 @@
-import { StyleSheet, Text, View } from 'react-native'
 import React,{createContext,useState,useEffect} from 'react'
-import { getNewsAPI, getSourceAPI } from './Api';
-import axios from 'axios';
+// import { getNewsAPI, getSourceAPI,categories,sources } from './Api';
+// import axios from 'axios';
+// import { useDispatch,useSelector } from 'react-redux'; 
+// import { fetchApiSource } from '../Redux/Actions/NewsAction';
+
 export const NewsContext = createContext()
 const Context = ({children}) => {
-    const [category, setCategory] = useState("general");
+  // const dispatch = useDispatch()
+  // const {source} = useSelector(state=>state.NewsReducer)
+    // const [category, setCategory] = useState("general");
     // const [source, setSource] = useState();
     // const [news, setNews] = useState([]);
     const [darkTheme, setDarkTheme] = useState(false)
     const [index, setIndex] = useState(1);
     // const fetchNews = async () => {
     //     const { data } = await axios.get(getNewsAPI(category));
-    //     setNews(data);
+    //     // setNews(data);
     //     setIndex(1);
     //   };
     
-    // const fetchNewsSource = async()=>{
-    //   try {const {data} =  await axios.get(getSourceAPI(source))
-    //   setSource(data)
-    //   setIndex(1)
-    // }catch(error){
-    //   console.log(error)
-    // }}
+  //   const fetchNewsSource = async()=>{
+  //     try {const {data} =  await axios.get(getSourceAPI(source))
+  //     setSource(data)
+  //     setIndex(1)
+  //   }catch(error){
+  //     console.log(error)
+  //   }
+  // }   
+  // useEffect(() => {
+  //       fetchNews();
+  //     }, [category]);
       // useEffect(() => {
-      //   fetchNews();
-      // }, [category]);
-      // useEffect(() => {
-      //   fetchNewsSource();
+      //   dispatch(fetchApiSource(source));
+      //   // fetchNewsSource()
       // }, [source]);
   return (
     <NewsContext.Provider 
     value={{
+      // news,
       index,
-      // fetchNews,
       setIndex,
-      category,
-      setCategory,
+      // fetchNews,
+      // category,
+      // setCategory,
+      // source,
       // setSource,
       setDarkTheme,
-      darkTheme,
+      darkTheme
       }}>
         {children}
     </NewsContext.Provider>

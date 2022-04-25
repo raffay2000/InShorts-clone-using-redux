@@ -82,10 +82,13 @@ export const categories = [
     },
   ];
   
-  export const BASE_URL = "https://saurav.tech/NewsAPI/";
+  export const BASE_URL = "https://saurav.tech/NewsAPI";
   
   export const getNewsAPI = (category, country = "us") => {
-    return `${BASE_URL}/top-headlines/category/${category}/${country}.json`;
+    // let url =`${BASE_URL}/top-headlines/category/${category}/${country}.json`;
+    // console.log(url)
+    // return url
+    return `${BASE_URL}/top-headlines/category/${category}/${country}.json`
   };
   
   export const getSourceAPI = (source) => {

@@ -4,12 +4,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { NewsContext } from "../../API/Context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {useDispatch,useSelector} from "react-redux"
-import { setNews } from "../../Redux/Actions/NewsAction"
-const TopNavigation = ({ index, setIndex }) => {
+import {useDispatch} from "react-redux"
+import { fetchApi } from "../../Redux/Actions/NewsAction"
+const TopNavigation = ({  index,setIndex }) => {
   const { darkTheme, setDarkTheme } = useContext(NewsContext);
     const dispatch = useDispatch()
-    const {news} = useSelector(state=>state.NewsReducer)
   return (
     <View
       style={{
@@ -19,25 +18,25 @@ const TopNavigation = ({ index, setIndex }) => {
     >
       {index === 0 ? (
         <TouchableOpacity
-          // onPress={() => setDarkTheme(!darkTheme)}
+          onPress={() => setDarkTheme(!darkTheme)}
           style={styles.left}
         >
           <Text 
             style={{ ...styles.text, color: darkTheme ? "lightgrey" : "black" }}
           >
-            {/* <MaterialCommunityIcons
+            <MaterialCommunityIcons
               name="theme-light-dark"
               size={24}
               color="#007FFF"
-            /> */}
+            />
           </Text>
         </TouchableOpacity>
-      ) : (
+      ):(
         <TouchableOpacity
           style={styles.left}
-          onPress={() => setIndex(index === 0 ? 1 : 0)}
+          onPress={() => dispatch(setIndex(index===0 ? 1 : 0))}
         >
-          <SimpleLineIcons name="arrow-left" size={15} color="#007FFF" />
+          <SimpleLineIcons name="arrow-left" size={15} color="#007FFF"/>
           <Text
             style={{ ...styles.text, color: darkTheme ? "lightgrey" : "black" }}
           >
@@ -52,16 +51,16 @@ const TopNavigation = ({ index, setIndex }) => {
       {index ? (
         <TouchableOpacity
           style={styles.right}
-          onPress={() => dispatch(setNews("general"))}
+          onPress={() => dispatch(fetchApi("general"))}
         >
           <Text style={styles.text}>
-            {/* <AntDesign name="reload1" size={24} color="#007FFF" /> */}
+            <AntDesign name="reload1" size={24} color="#007FFF" />
           </Text>
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
           style={styles.left}
-          onPress={() => setIndex(index === 0 ? 1 : 0)}
+          onPress={() => dispatch(setIndex(index === 0 ? 1 : 0))}
         >
           <Text
             style={{...styles.text, color: darkTheme ? "white" : "black" }}
